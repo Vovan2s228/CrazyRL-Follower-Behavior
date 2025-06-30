@@ -4,3 +4,4 @@ import crazy_rl.multi_agent.numpy.circle
 import crazy_rl.multi_agent.numpy.escort
 import crazy_rl.multi_agent.numpy.hover
 import crazy_rl.multi_agent.numpy.surround
+import crazy_rl.multi_agent.numpy.behavior_recognition
