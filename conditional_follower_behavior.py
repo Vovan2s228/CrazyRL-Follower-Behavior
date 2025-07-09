@@ -1,4 +1,4 @@
-# evaluate_follower_behavior.py
+# conditional_follower_behavior.py
 import os
 import time
 from functools import partial
