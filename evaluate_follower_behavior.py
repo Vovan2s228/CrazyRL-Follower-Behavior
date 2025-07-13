@@ -130,27 +130,44 @@ for ep in range(1, num_episodes+1):
     
     print(f"Episode {ep} finished after {step_count} steps.")
     
-    # -------------------------------------------------------------- #
-    # 5.  Plot velocities for this episode
-    # -------------------------------------------------------------- #
-    follower_pos_hist = np.stack(follower_pos_hist)
-    leader_pos_hist   = np.stack(leader_pos_hist)
-    # finite-difference once more to have arrays of length N-1
-    follower_vel_hist = np.diff(follower_pos_hist, axis=0)/SIM_DT
-    leader_vel_hist   = np.diff(leader_pos_hist,   axis=0)/SIM_DT
+    # ──────────────────────────────────────────────────────────────
+    # 5.  Visualisation for THIS episode
+    # ──────────────────────────────────────────────────────────────
+    follower_pos_hist = np.asarray(follower_pos_hist)
+    leader_pos_hist   = np.asarray(leader_pos_hist)
+
+    # -------- A. trajectory figure --------------------------------
+    fig = plt.figure(figsize=(7, 6))
+    ax  = fig.add_subplot(111, projection='3d')
+    ax.plot(leader_pos_hist[:, 0],  leader_pos_hist[:, 1],  leader_pos_hist[:, 2],
+            'y-', label='Leader')
+    ax.plot(follower_pos_hist[:, 0], follower_pos_hist[:, 1], follower_pos_hist[:, 2],
+            'r-', label='Follower')
+    ax.set_xlabel("X (m)"); ax.set_ylabel("Y (m)"); ax.set_zlabel("Z (m)")
+    ax.set_title(f"3-D Trajectory – episode {ep}")
+    ax.legend(); ax.view_init(elev=30, azim=-60)
+
+    # -------- B. velocity figure ----------------------------------
+    follower_vel_hist = np.diff(follower_pos_hist, axis=0) / SIM_DT
+    leader_vel_hist   = np.diff(leader_pos_hist,   axis=0) / SIM_DT
     steps = np.arange(follower_vel_hist.shape[0])
-    
-    plt.figure(figsize=(10,6))
-    plt.subplot(2,1,1)
-    plt.plot(steps, follower_vel_hist[:,0], label='Vx')
-    plt.plot(steps, follower_vel_hist[:,1], label='Vy')
-    plt.plot(steps, follower_vel_hist[:,2], label='Vz')
-    plt.title(f"Follower velocity – episode {ep}")
-    plt.ylabel("m/s"); plt.legend()
-    
-    plt.subplot(2,1,2)
-    plt.plot(steps, leader_vel_hist[:,0], label='Vx')
-    plt.plot(steps, leader_vel_hist[:,1], label='Vy')
-    plt.plot(steps, leader_vel_hist[:,2], label='Vz')
-    plt.title("Leader velocity")
-    plt.xlabel("Step"); plt.ylabel("m/s"); plt
+
+    VEL_LIM = 3.0     # use same scale for every panel
+    fig2, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 6), sharex=True)
+
+    ax1.plot(steps, follower_vel_hist[:, 0], label='Vx')
+    ax1.plot(steps, follower_vel_hist[:, 1], label='Vy')
+    ax1.plot(steps, follower_vel_hist[:, 2], label='Vz')
+    ax1.set_title(f"Follower velocity – episode {ep}")
+    ax1.set_ylabel("m/s"); ax1.set_ylim(-VEL_LIM, VEL_LIM); ax1.legend()
+
+    ax2.plot(steps, leader_vel_hist[:, 0], label='Vx')
+    ax2.plot(steps, leader_vel_hist[:, 1], label='Vy')
+    ax2.plot(steps, leader_vel_hist[:, 2], label='Vz')
+    ax2.set_title("Leader velocity")
+    ax2.set_xlabel("Step"); ax2.set_ylabel("m/s")
+    ax2.set_ylim(-VEL_LIM, VEL_LIM); ax2.legend()
+
+    fig2.tight_layout()
+    plt.show()           # show both figures
+    plt.close('all')     # ← NEW: ensure clean slate before next episode

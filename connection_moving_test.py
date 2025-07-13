@@ -28,15 +28,15 @@ def flight_sequence(scf):
 		reset_estimator(scf)
 		hlc: HighLevelCommander = scf.cf.high_level_commander
 
-		print(f"[🛫] {scf._link_uri} Taking off...")
+		print(f"{scf._link_uri} Taking off...")
 		hlc.takeoff(0.7, 2.0)
 		time.sleep(3.0)
 
-		print(f"[➡️] {scf._link_uri} Moving forward 0.3m...")
+		print(f"{scf._link_uri} Moving forward 0.3m...")
 		hlc.go_to(0.3, 0.0, 0.7, 0.0, 1.5)
 		time.sleep(2.0)
 
-		print(f"[🛬] {scf._link_uri} Landing...")
+		print(f"{scf._link_uri} Landing...")
 		hlc.land(0.0, 2.0)
 		time.sleep(2.5)
 
