@@ -41,7 +41,7 @@ KP_DEFAULT   = 2.0
 KP_LAND      = 1.2
 ASCEND_H     = 0.7
 Z_TOL        = 0.03
-V_MAX_H      = 0.30
+V_MAX_H      = 0.4
 V_MAX_Z      = 0.20
 ORBIT_PERIOD = 6.0
 
