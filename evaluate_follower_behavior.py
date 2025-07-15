@@ -170,4 +170,4 @@ for ep in range(1, num_episodes+1):
 
     fig2.tight_layout()
     plt.show()           # show both figures
-    plt.close('all')     # ← NEW: ensure clean slate before next episode
+    plt.close('all')     # ensure clean slate before next episode
